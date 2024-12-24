@@ -1,3 +1,7 @@
+---
+import ToggleDarkMode from '@utils/ToggleDarkMode'
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -6,8 +10,21 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Basics</title>
+		<script>
+			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+			if (
+			  localStorage.getItem("theme") === "dark" ||
+			  (!("theme" in localStorage) &&
+				window.matchMedia("(prefers-color-scheme: dark)").matches)
+			) {
+			  document.documentElement.classList.add("dark");
+			} else {
+			  document.documentElement.classList.remove("dark");
+			}
+		</script>
 	</head>
 	<body>
+		<ToggleDarkMode client:load />
 		<slot />
 	</body>
 </html>
